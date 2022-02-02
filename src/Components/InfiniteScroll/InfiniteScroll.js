@@ -10,7 +10,7 @@ export default function InfiniteScroll() {
   const [searchState, setSearchState] = useState('random')
 
 
-  const infiniteTetchData = () => {
+  const infiniteFetchData = () => {
     fetch(`https://api.unsplash.com/search/photos?page=${pageIndex}&per_page=30&query=${searchState}&client_id=${process.env.REACT_APP_API_UNSPLASH}`)
     .then(response => {
       return response.json()
@@ -37,7 +37,7 @@ export default function InfiniteScroll() {
   }
 
   useEffect(() => {
-    infiniteTetchData();
+    infiniteFetchData();
 
     return () => {
 
