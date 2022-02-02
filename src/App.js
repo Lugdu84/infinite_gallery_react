@@ -1,4 +1,5 @@
 import InfiniteScroll from "./Components/InfiniteScroll/InfiniteScroll";
+require("dotenv").config();
 
 function App() {
   return (
