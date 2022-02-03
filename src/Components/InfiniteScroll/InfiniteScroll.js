@@ -37,6 +37,42 @@ export default function InfiniteScroll() {
     })
   }
 
+
+  const searchFetchData = () => {
+    fetch(
+      `https://api.unsplash.com/search/photos?page=${pageIndex}&per_page=30&query=${searchState}&client_id=${process.env.REACT_APP_API_UNSPLASH}`
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        const imgsReceived = [];
+        data.results.forEach((img) => {
+          imgsReceived.push(img.urls.regular);
+        });
+        const newFreshState = [
+          [],
+          [],
+          [],
+        ];
+        let index = 0;
+        for (let i = 0; i < 3; i++) {
+          for (let j = 0; j < 10; j++) {
+            newFreshState[i].push(imgsReceived[index]);
+            index++;
+          }
+        }
+
+        setDataImg(newFreshState);
+      });
+  };
+
+  useEffect(() => {
+    searchFetchData();
+
+  }, [searchState]);
+
+
   useEffect(() => {
     infiniteFetchData();
 
@@ -54,6 +90,8 @@ export default function InfiniteScroll() {
 
   const handleSearch = e => {
     e.preventDefault()
+    setSearchState(inpRef.current.value)
+    setPageIndex(1)
   }
 
   const infiniteCheck = () => {
