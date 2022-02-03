@@ -28,25 +28,41 @@ export default function InfiniteScroll() {
       let index = 0;
       for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 10; j++) {
-          newFreshState[i].push(imgsReceived[index])
-
+          newFreshState[i].push(imgsReceived[index]);
+          index++;
         }
-
       }
+
+      setDataImg(newFreshState)
     })
   }
 
   useEffect(() => {
     infiniteFetchData();
 
-    return () => {
-
-    };
   }, [pageIndex]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', infiniteCheck)
+
+    return () => {
+      window.removeEventListener('scroll', infiniteCheck)
+    };
+  }, []);
+
 
 
   const handleSearch = e => {
     e.preventDefault()
+  }
+
+  const infiniteCheck = () => {
+
+    const {scrollTop, scrollHeight, clientHeight} = document.documentElement;
+
+    if (scrollHeight - scrollTop === clientHeight) {
+      setPageIndex(pageIndex => pageIndex + 1)
+    }
   }
 
   const inpRef = useRef()
@@ -58,9 +74,21 @@ export default function InfiniteScroll() {
         <input type="text" id="search" ref={inpRef}/>
       </form>
       <div className="card-list">
-        <div></div>
-        <div></div>
-        <div></div>
+        <div>
+          {dataImg[0].map(img => {
+            return <img key={uuidv4()} src={img} alt='unsplash' />;
+          })}
+        </div>
+        <div>
+          {dataImg[1].map(img => {
+            return <img key={uuidv4()} src={img} alt='unsplash' />;
+          })}
+        </div>
+        <div>
+          {dataImg[2].map(img => {
+            return <img key={uuidv4()} src={img} alt='unsplash' />;
+          })}
+        </div>
       </div>
     </div>
   )
