@@ -8,6 +8,7 @@ export default function InfiniteScroll() {
   const [dataImg, setDataImg] = useState([[],[],[]])
   const [pageIndex, setPageIndex] = useState(1)
   const [searchState, setSearchState] = useState('random')
+  const [firstCall, setFirstCall] = useState(true);
 
 
   const infiniteFetchData = () => {
@@ -34,6 +35,7 @@ export default function InfiniteScroll() {
       }
 
       setDataImg(newFreshState)
+      setFirstCall(false)
     })
   }
 
@@ -68,6 +70,7 @@ export default function InfiniteScroll() {
   };
 
   useEffect(() => {
+    if (firstCall)  return;
     searchFetchData();
 
   }, [searchState]);
